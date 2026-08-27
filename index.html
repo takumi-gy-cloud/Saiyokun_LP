@@ -25,7 +25,9 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 .section-title{font-size:clamp(28px,4vw,44px);line-height:1.35;letter-spacing:-.04em;margin:0;font-weight:900}
 .section-lead{color:var(--muted);max-width:720px;margin:15px auto 0;font-size:15px}
 .section-head{text-align:center;margin-bottom:44px}
-
+.section-title .accent-color{
+  color:var(--teal2);
+}
 /* header */
 .header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(220,235,234,.75)}
 .header-inner{height:60px;display:flex;align-items:center;justify-content:space-between;gap:28px;position:relative}
@@ -55,9 +57,67 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 .hero-actions .btn{padding:14px 22px}
 .hero-note{font-size:11px;color:#829295;margin-top:12px}
 
-.stat-strip{position:relative;z-index:2;margin-top:45px;background:#fff;border-radius:20px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden}
-.stat{padding:22px;text-align:center;border-right:1px solid var(--border)}.stat:last-child{border:0}
-.stat small{display:block;font-size:11px;color:var(--muted);font-weight:700}.stat strong{font-size:30px;line-height:1.2;color:var(--teal2)}.stat strong span{font-size:14px}
+
+.hero-person{
+  position:absolute;
+  z-index:0;                 /* hero-gridがz-index:1なので、自動的に最背面になる */
+  right:-30px;
+  top:60px;
+  width:460px;
+  max-width:46%;
+  height:auto;
+  opacity:.95;
+  padding-right: 13px;
+  padding-top: 5px;
+
+  pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom, #000 75%, transparent 100%);
+          mask-image:linear-gradient(to bottom, #000 75%, transparent 100%);
+}
+
+
+
+.stat-strip{
+  position:relative;z-index:2;margin-top:45px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+}
+.stat{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 10px 18px;
+  text-align:center;
+  box-shadow:0 12px 30px -16px rgba(16,42,74,.25);
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+.stat small{
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  font-weight:800;
+  letter-spacing:.02em;
+  line-height:1.4;
+  min-height:2.8em; /* ラベルの行数が変わっても数字の位置を揃える */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.stat strong{
+  display:block;
+  margin-top:6px;
+  font-size:25px;          /* clampをやめて固定値に */
+  line-height:1.25;
+  color:var(--teal2);
+  white-space:nowrap;      /* 折り返し禁止 */
+}
+.stat strong span{
+  font-size:.6em;
+  margin-left:1px;
+  color:var(--teal);
+}
+
 .stat-media-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px}
 .stat-media-row img{height:50px;width:auto;display:block}
 .stat-media-row span{font-size:11px;color:var(--muted);font-weight:700}
@@ -92,35 +152,42 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 }
 /* features */
 .feature-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  max-width:720px;
+  margin:0 auto;
 }
 .feature{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:26px 22px;
-  min-height:245px;
-  box-shadow:0 8px 28px rgba(16,42,74,.05);
-}
-.feature-title{
   display:flex;
-  align-items:center;
-  gap:16px;
-  margin-bottom:18px;
+  align-items:flex-start;
+  gap:22px;
+  padding:28px 4px;
+  border-bottom:1px dashed var(--border);
 }
-.feature .num{
+.feature:last-child{
+  border-bottom:0;
+}
+.feature-icon{
+  flex:none;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:var(--mint);
   display:grid;
   place-items:center;
-  width:44px;
-  height:44px;
-  border-radius:13px;
-  background:#e3ecfb;
-  color:var(--teal2);
-  font-weight:900;
-  margin-bottom:0;
-  flex-shrink:0;
+}
+.feature-text h3{
+  font-size:19px;
+  font-weight:800;
+  margin:0 0 8px;
+  color:var(--ink);
+}
+.feature-text p{
+  font-size:14.5px;
+  color:var(--muted);
+  margin:0;
+  line-height:1.85;
 }
 .feature h3{
   font-size:24px;
@@ -150,9 +217,64 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 .interview-photo img{width:100%;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.05);display:block}
 
 /* onboarding / plan */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.step{position:relative;background:#fff;border:1px solid var(--border);border-radius:18px;padding:24px}
-.step .n{font-size:11px;color:var(--teal2);font-weight:900}.step h3{margin:9px 0 6px;font-size:22px}.step p{margin:0;color:var(--muted);font-size:15px}
+.steps{
+  display:flex;
+  flex-direction:column;
+  max-width:640px;
+  margin:0 auto;
+  gap:0;
+}
+.step{
+  display:flex;
+  align-items:flex-start;
+  gap:22px;
+  padding-bottom:36px;   /* ★追加：各step間の余白を統一 */
+}
+.step:last-child{
+  padding-bottom:0;      /* ★最後のstepは余白不要 */
+}
+.step-icon{
+  flex:none;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:var(--mint);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+}
+.step-label{
+  font-size:9px;
+  font-weight:800;
+  color:var(--teal2);
+  letter-spacing:.02em;
+}
+.step-text{
+  padding-top:6px;
+}
+.step-text h3{
+  font-size:20px;
+  font-weight:800;
+  margin:0 0 8px;
+  color:var(--ink);
+}
+.step-text p{
+  font-size:14.5px;
+  color:var(--muted);
+  margin:0;
+  line-height:1.85;
+}
+.step-arrow-v{
+  margin-left:32px;
+  padding:8px 0;
+  color:var(--teal);
+  font-size:14px;
+  line-height:1;
+}
+
+
 .plan-wrap{display:grid;grid-template-columns:1fr;max-width:600px;margin:auto;gap:25px;align-items:stretch}
 .plan{border-radius:23px;padding:32px;border:1px solid var(--border);background:#fff;box-shadow:var(--shadow)}
 .plan.primary{background:#eef4fd;border:2px solid #90b7ee}
@@ -175,8 +297,7 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
    box-shadow:0 15px 30px rgba(0,0,0,.08);
    gap:15px;
  }
- .hero{padding-top:40px}
- .feature-grid{grid-template-columns:repeat(2,1fr)}
+ .hero{padding-top:20px}
  .interviews{grid-template-columns:1fr}
  .flow{grid-template-columns:1fr;gap:18px}.flow:before{left:34px;right:auto;top:34px;bottom:34px;width:2px;height:auto}
  .flow-item{display:flex;align-items:center;gap:16px;text-align:left}
@@ -190,7 +311,14 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
  .header .logo-img{height:26px}
  .section{padding:65px 0}.section-head{margin-bottom:30px}
  .hero h1{font-size:34px}.hero-lead{font-size:14px}
- .stat-strip{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid var(--border);padding:15px}.stat:last-child{border-bottom:0}
+ /* .stat-strip{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid var(--border);padding:15px}.stat:last-child{border-bottom:0} */
+
+.stat-strip{gap:8px}
+.stat{padding:12px 8px 14px}
+.stat small{font-size:10px}
+.stat strong{font-size:23px}
+.stat-media-row img{height:32px}
+
  .feature-grid,.steps{grid-template-columns:1fr}
  .hero-actions{flex-direction:column}.hero-actions .btn{width:100%}
  .footer-nav{grid-template-columns:1fr 1fr}.footer-bottom{flex-direction:column;gap:6px}
@@ -213,24 +341,25 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 </header>
 
 <section class="hero">
+  <img class="hero-person" src="images/hero-visual.png" alt="">
   <div class="container">
     <div class="hero-grid">
       <div>
-        <span class="badge">人材紹介会社向け｜集客支援</span>
+        <!-- <span class="badge">人材紹介会社向け｜集客支援</span> -->
         <h1>Z世代の応募を最大化<br><span class="accent">集客業務</span>を<br>まるっとお任せ</h1>
-        <p class="hero-lead">「集客」に必要な業務をまとめて支援します。</p>
+        <p class="hero-lead">人材紹介会社の「集客」に、<br>必要な業務をまとめて解決します。</p>
         <div class="stat-strip">
           <div class="stat">
-            <small>SNS総フォロワー15万人</small>
+            <small>フォロワー15万人</small>
             <div class="stat-media-row">
               <a href="https://www.youtube.com/@tenshokuzukan/featured" target="_blank" rel="noopener">
                 <img src="images/about-01-tenshoku-logo-cropped.png" alt="転職.com">
               </a>
-              <span>を運営</span>
+              <span>運営</span>
             </div>
           </div>
-          <div class="stat"><small>月間相談件数</small><strong>500件以上</strong></div>
-          <div class="stat"><small>支援実績</small><strong>1,000人以上</strong></div>
+          <div class="stat"><small>月間相談件数</small><strong>500件+</strong></div>
+          <div class="stat"><small>支援実績</small><strong>1,000人+</strong></div>
         </div>
         <div class="hero-actions">
           <a class="btn btn-line" href="https://lin.ee/ygjUOrJ" target="_blank" rel="noopener">LINEでお問い合わせ</a>
@@ -242,8 +371,9 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 </section>
 
 <section class="section mint" id="issue">
-  <div class="container">
-    <div class="section-head"><h2 class="section-title">こんな課題ありませんか？</h2></div>
+<div class="section-head">
+  <h2 class="section-title">こんな課題を、<br><span class="accent-color">まとめて解決します。</span></h2>
+</div>
     <div class="issue-grid">
       <div class="issue-list">
         <div class="issue"><span class="check">✓</span><span>若い世代の集客に苦戦している</span></div>
@@ -256,42 +386,50 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 
 <section class="section" id="feature">
   <div class="container">
-    <div class="section-head"><h2 class="section-title">採用くんが解決します</h2></div>
+    <div class="section-head"><h2 class="section-title">採用くんが<span class="accent-color">選ばれる理由</span></h2></div>
     <div class="feature-grid">
 
-      <article class="feature">
-        <div class="feature-title">
-          <div class="num">01</div>
-          <h3>Z世代の母集団形成力</h3>
-        </div>
-        <p>自社メディア運営で蓄積した若年層への訴求ノウハウを活用し、応募につながる導線を設計します。</p>
-      </article>
-
-      <article class="feature">
-        <div class="feature-title">
-          <div class="num">02</div>
-          <h3>着座までコミット</h3>
-        </div>
-        <p>日程調整から前日のリマインドまで、求職者の着座を徹底サポートします。</p>
-      </article>
-
-      <article class="feature">
-        <div class="feature-title">
-          <div class="num">03</div>
-          <h3>ミスマッチを減らす</h3>
-        </div>
-        <p>応募者対応と条件のヒヤリングを行い、初期スクリーニングを徹底します。</p>
-      </article>
-
-      <article class="feature">
-        <div class="feature-title">
-          <div class="num">04</div>
-          <h3>丸投げで終わらない</h3>
-        </div>
-        <p>具体的なデータを共有し、何が効いているのかを可視化。次の施策につなげます。</p>
-      </article>
-
+  <article class="feature">
+    <div class="feature-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </div>
+    <div class="feature-text">
+      <h3>Z世代の母集団形成力</h3>
+      <p>自社メディア運営で蓄積した若年層への訴求ノウハウを活用し、応募につながる導線を設計します。</p>
+    </div>
+  </article>
+
+  <article class="feature">
+    <div class="feature-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+    </div>
+    <div class="feature-text">
+      <h3>着座までコミット</h3>
+      <p>日程調整から前日のリマインドまで、求職者の着座を徹底サポートします。</p>
+    </div>
+  </article>
+
+  <article class="feature">
+    <div class="feature-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+    </div>
+    <div class="feature-text">
+      <h3>ミスマッチを減らす</h3>
+      <p>応募者対応と条件のヒヤリングを行い、初期スクリーニングを徹底します。</p>
+    </div>
+  </article>
+
+  <article class="feature">
+    <div class="feature-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+    </div>
+    <div class="feature-text">
+      <h3>丸投げで終わらない</h3>
+      <p>具体的なデータを共有し、何が効いているのかを可視化。次の施策につなげます。</p>
+    </div>
+  </article>
+
+</div>
   </div>
 </section>
 
@@ -339,18 +477,59 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 <section class="section" id="use-flow">
   <div class="container">
     <div class="section-head"><h2 class="section-title">ご利用の流れ</h2></div>
-    <div class="steps">
-      <article class="step"><div class="n">STEP 01</div><h3>お問い合わせ</h3><p>LINEまたはお問い合わせからご相談ください。</p></article>
-      <article class="step"><div class="n">STEP 02</div><h3>ヒアリング</h3><p>現在の集客状況や目標をお伺いします。</p></article>
-      <article class="step"><div class="n">STEP 03</div><h3>プラン設計</h3><p>必要な業務範囲と運用方法をご提案します。</p></article>
-      <article class="step"><div class="n">STEP 04</div><h3>運用開始</h3><p>合意した内容に沿って集客支援をスタートします。</p></article>
+   <div class="steps">
+
+  <article class="step">
+    <div class="step-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-13a2 2 0 0 1 2-2h6l6 6v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M12 6v6h6"/></svg>
+      <span class="step-label">STEP 1</span>
     </div>
+    <div class="step-text">
+      <h3>お問い合わせ</h3>
+      <p>お問い合わせからご相談ください。</p>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="step-label">STEP 2</span>
+    </div>
+    <div class="step-text">
+      <h3>ヒアリング</h3>
+      <p>現在の集客状況や目標をお伺いします。</p>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <span class="step-label">STEP 3</span>
+    </div>
+    <div class="step-text">
+      <h3>プラン設計</h3>
+      <p>業務範囲と運用方法をご提案します。</p>
+    </div>
+  </article>
+
+  <article class="step">
+    <div class="step-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
+      <span class="step-label">STEP 4</span>
+    </div>
+    <div class="step-text">
+      <h3>運用開始</h3>
+      <p>合意した内容に沿って集客支援をスタートします。</p>
+    </div>
+  </article>
+
+</div>
   </div>
 </section>
 
 <section class="section mint" id="price">
   <div class="container">
-    <div class="section-head"><h2 class="section-title">契約形態</h2></div>
+    <div class="section-head"><h2 class="section-title">定額で集客業務を丸ごと</h2></div>
     <div class="plan-wrap">
       <article class="plan primary">
         <h3>集客支援プラン</h3>
