@@ -58,7 +58,7 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 .hero-note{font-size:11px;color:#829295;margin-top:12px}
 
 
-.hero-person{
+/* .hero-person{
   position:absolute;
   z-index:0;                 /* hero-gridがz-index:1なので、自動的に最背面になる */
   right:-30px;
@@ -74,8 +74,44 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
   -webkit-mask-image:linear-gradient(to bottom, #000 75%, transparent 100%);
           mask-image:linear-gradient(to bottom, #000 75%, transparent 100%);
 }
+ */
+ 
+.hero{
+  position:relative;
+  overflow:hidden;   /* ぼかし円がはみ出さないように */
+}
 
+.hero-person-wrap{
+  position:absolute;
+  z-index:0;
+  right:-20px;
+  top:40px;
+  width:460px;
+  max-width:48%;
+  pointer-events:none;
+}
 
+/* 人物の背後に馴染ませ用のぼかし円 */
+.hero-person-wrap::before{
+  content:"";
+  position:absolute;
+  right:10%;
+  top:10%;
+  width:80%;
+  height:80%;
+  background:radial-gradient(circle, rgba(37,99,235,.16) 0%, rgba(37,99,235,0) 70%);
+  filter:blur(6px);
+  z-index:-1;
+}
+
+.hero-person{
+  width:100%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 18px 22px rgba(16,42,74,.18));
+  -webkit-mask-image:linear-gradient(to bottom, #000 72%, transparent 96%);
+          mask-image:linear-gradient(to bottom, #000 72%, transparent 96%);
+}
 
 .stat-strip{
   position:relative;z-index:2;margin-top:45px;
@@ -200,10 +236,60 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 }
 
 /* flow */
-.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
-.flow:before{content:"";position:absolute;left:10%;right:10%;top:34px;height:2px;background:#bcd6f5}
-.flow-item{text-align:center;position:relative}
-.flow-num{margin:auto;width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:#fff;border:8px solid #e3ecfb;color:var(--teal2);font-weight:900;position:relative;z-index:1}
+.flow-groups-wrap{
+  display:flex;
+  justify-content:center;   /* 中央寄せだと左が見切れて分かりにくいため左寄せに */
+  align-items:flex-start;
+  gap:32px;
+  flex-wrap:nowrap;             /* ★折り返さない */
+  margin-top:20px;
+  overflow-x:auto;              /* ★入りきらない場合は横スクロール */
+  padding-bottom:8px;           /* スクロールバー分の余白 */
+  -webkit-overflow-scrolling:touch;
+}
+.flow-group{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  flex:none;                    /* ★縮まないように固定 */
+}
+
+.flow-group-title{
+  background:var(--teal2);
+  color:#fff;
+  font-weight:800;
+  font-size:17px;
+  padding:14px 32px;
+  border-radius:999px;
+  margin-bottom:24px;
+  white-space:nowrap;
+}
+.flow-columns{
+  display:flex;
+  gap:10px;
+}
+.flow-col{
+  width:64px;
+  min-height:260px;
+  border:2px solid var(--teal);
+  border-radius:16px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  writing-mode:vertical-rl;
+  text-orientation:mixed;
+  font-weight:800;
+  font-size:25px;
+  line-height:1.7;
+  color:var(--ink);
+  padding:16px 0;
+}
+.flow-col.dashed{
+  border-style:dashed;
+  background:var(--mint);
+  color:var(--teal2);
+}
 .flow h3{font-size:18px;margin:15px 0 4px}.flow p{font-size:13px;color:var(--muted);margin:0 12px}
 
 /* CTA */
@@ -299,10 +385,17 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
  }
  .hero{padding-top:20px}
  .interviews{grid-template-columns:1fr}
- .flow{grid-template-columns:1fr;gap:18px}.flow:before{left:34px;right:auto;top:34px;bottom:34px;width:2px;height:auto}
+ .flow{grid-template-columns:1fr;gap:18px}
+ .flow:before{left:34px;right:auto;top:34px;bottom:34px;width:2px;height:auto}
  .flow-item{display:flex;align-items:center;gap:16px;text-align:left}
  .flow-num{margin:0}
  .flow h3{margin:0}
+
+  .flow-col{
+    min-height:200px;
+    width:52px;
+    font-size:20px;
+  }
  .footer-top{flex-direction:column}.footer-nav{grid-template-columns:repeat(3,1fr);gap:20px}
 }
 
@@ -312,7 +405,29 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
  .section{padding:65px 0}.section-head{margin-bottom:30px}
  .hero h1{font-size:34px}.hero-lead{font-size:14px}
  /* .stat-strip{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid var(--border);padding:15px}.stat:last-child{border-bottom:0} */
-
+.hero-person-wrap{
+    width:220px;
+    max-width:55%;
+    right:-10px;
+    top:70px;
+  }
+  .hero-person{
+    -webkit-mask-image:linear-gradient(to bottom, #000 60%, transparent 92%);
+            mask-image:linear-gradient(to bottom, #000 60%, transparent 92%);
+  }
+  .flow-col{
+    width:52px;
+    min-height:200px;
+    font-size:18px;
+  }
+  .flow-group-title{
+    font-size:15px;
+    padding:12px 24px;
+  }
+  .flow-groups-wrap{
+    gap:20px;
+  }
+}
 .stat-strip{gap:8px}
 .stat{padding:12px 8px 14px}
 .stat small{font-size:10px}
@@ -341,13 +456,15 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
 </header>
 
 <section class="hero">
-  <img class="hero-person" src="images/hero-visual.png" alt="">
+   <div class="hero-person-wrap">
+    <img class="hero-person" src="images/hero-visual.png" alt="">
+  </div>
   <div class="container">
     <div class="hero-grid">
       <div>
         <!-- <span class="badge">人材紹介会社向け｜集客支援</span> -->
-        <h1>Z世代の応募を最大化<br><span class="accent">集客業務</span>を<br>まるっとお任せ</h1>
-        <p class="hero-lead">人材紹介会社の「集客」に、<br>必要な業務をまとめて解決します。</p>
+        <h1>Z世代に届く。<br><span class="accent">集客業務</span>を<br>まるっとお任せ</h1>
+        <p class="hero-lead">母集団形成から、<br>面談着座まで丸ごと代行</p>
         <div class="stat-strip">
           <div class="stat">
             <small>フォロワー15万人</small>
@@ -370,10 +487,11 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
   </div>
 </section>
 
-<section class="section mint" id="issue">
-<div class="section-head">
-  <h2 class="section-title">こんな課題を、<br><span class="accent-color">まとめて解決します。</span></h2>
-</div>
+<!-- <section class="section mint" id="issue">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">こんな課題を、<br><span class="accent-color">まとめて解決します。</span></h2>
+    </div>
     <div class="issue-grid">
       <div class="issue-list">
         <div class="issue"><span class="check">✓</span><span>若い世代の集客に苦戦している</span></div>
@@ -382,11 +500,11 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <section class="section" id="feature">
   <div class="container">
-    <div class="section-head"><h2 class="section-title">採用くんが<span class="accent-color">選ばれる理由</span></h2></div>
+    <div class="section-head"><h2 class="section-title">なぜ人材紹介会社様に<br><span class="accent-color">採用くんが選ばれるのか</span></h2></div>
     <div class="feature-grid">
 
   <article class="feature">
@@ -404,7 +522,7 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
     </div>
     <div class="feature-text">
-      <h3>着座までコミット</h3>
+      <h3>広告運用から、<br>面談着座までコミット</h3>
       <p>日程調整から前日のリマインドまで、求職者の着座を徹底サポートします。</p>
     </div>
   </article>
@@ -414,8 +532,8 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
     </div>
     <div class="feature-text">
-      <h3>ミスマッチを減らす</h3>
-      <p>応募者対応と条件のヒヤリングを行い、初期スクリーニングを徹底します。</p>
+      <h3>人材紹介会社様に特化</h3>
+      <p>集客は「採用くん」、クロージングは貴社様の分業体制で支援します</p>
     </div>
   </article>
 
@@ -433,15 +551,46 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
   </div>
 </section>
 
-<section class="section mint" id="flow">
+<section class="section mint" id="case">  
+  <div class="container">
+    <div class="section-head"><h2 class="section-title"><span class="accent-color">導入事例</span>のご紹介</h2></div>
+    <div class="interviews">
+      <div class="interview-photo">
+        <img src="images/result1.jpg" alt="企業インタビュー1">
+      </div>
+      <div class="interview-photo">
+        <img src="images/result2.jpg" alt="企業インタビュー2">
+      </div>
+      <div class="interview-photo">
+        <img src="images/result3.jpg" alt="企業インタビュー3">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="flow">
   <div class="container">
     <div class="section-head"><h2 class="section-title">面談につながるまでの<br>業務をサポート</h2></div>
-    <div class="flow">
-      <div class="flow-item"><div class="flow-num">01</div><h3>ターゲット設計</h3></div>
-      <div class="flow-item"><div class="flow-num">02</div><h3>求人・原稿制作</h3></div>
-      <div class="flow-item"><div class="flow-num">03</div><h3>集客・広告運用</h3></div>
-      <div class="flow-item"><div class="flow-num">04</div><h3>応募者対応</h3></div>
-      <div class="flow-item"><div class="flow-num">05</div><h3>面談へ</h3></div>
+
+    <div class="flow-groups-wrap">
+
+      <div class="flow-group">
+        <div class="flow-group-title">母集団形成</div>
+        <div class="flow-columns">
+          <div class="flow-col">ターゲット設計</div>
+          <div class="flow-col">求人・原稿制作</div>
+          <div class="flow-col">集客・広告運用</div>
+        </div>
+      </div>
+
+      <div class="flow-group">
+        <div class="flow-group-title">応募者対応</div>
+        <div class="flow-columns">
+          <div class="flow-col">面談設定</div>
+          <div class="flow-col ">リマインド</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -457,22 +606,7 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
   </div>
 </section>
 
-<section class="section" id="case">
-  <div class="container">
-    <div class="section-head"><h2 class="section-title">導入実績</h2></div>
-    <div class="interviews">
-      <div class="interview-photo">
-        <img src="images/result1.jpg" alt="企業インタビュー1">
-      </div>
-      <div class="interview-photo">
-        <img src="images/result2.jpg" alt="企業インタビュー2">
-      </div>
-      <div class="interview-photo">
-        <img src="images/result3.jpg" alt="企業インタビュー3">
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <section class="section" id="use-flow">
   <div class="container">
@@ -575,7 +709,7 @@ a{color:inherit;text-decoration:none} img{max-width:100%;height:auto}
     <div class="footer-top">
       <div class="footer-brand">
         <a class="logo" href="https://yorisoi-hr.com/"><img class="logo-img-footer" src="images/logo_w.png" alt="YORISOI"></a>
-        <p>Z世代に特化したデータとノウハウで、<br>企業と求職者の未来をつなぐHRカンパニー。</p>
+        <p>Z世代に特化したデータとノウハウで、<br>企業と求職者の未来をつなぐ。 <br>渋谷を代表するHRカンパニー</p>
       </div>
       <nav class="footer-nav">
         <div><h4>SERVICE</h4><a href="#feature">特徴</a><a href="#price">契約形態</a></div>
